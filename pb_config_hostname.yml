@@ -1,0 +1,23 @@
+---
+- name: "#### Configuración inicial del Hostname en los dispositivos"
+  hosts: junos
+  connection: local
+  gather_facts: no
+  roles:
+    - juniper.junos
+  tasks:
+    ### -------------------------------------------------------------
+    ### Configurando Hostname
+    ### -------------------------------------------------------------
+    - name: "configurando el hostname en los switch de la red"
+      juniper_junos_config:
+        user: "admin"
+        load: 'merge'
+        lines:
+          - "set system host-name {{ inventory_hostname }}"
+        format: "set"
+      register: response
+
+    - name: "Imprimir la respuesta registrada en la variable"
+      debug:
+        var: response
