@@ -38,5 +38,5 @@
     ### ------------------------------------------------------------------
     - name: "creamos el archivo de configuración en el directorio de bakcup"
       copy:
-        content: "{{ xml_config }}"
+        content: "{{ xml_config.config }}"
         dest: "{{ backup_directory }}/config.xml"
