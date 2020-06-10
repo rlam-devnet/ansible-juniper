@@ -30,13 +30,13 @@
       juniper_junos_config:
         user: "admin"
         retrieve: committed
-        format: "xml"
-      register: xml_config
+        format: "text"
+      register: text_config
 
     ### ------------------------------------------------------------------
     ### Guardamos la configuración en el directorio
     ### ------------------------------------------------------------------
     - name: "creamos el archivo de configuración en el directorio de bakcup"
       copy:
-        content: "{{ xml_config.config }}"
-        dest: "{{ backup_directory }}/config.xml"
+        content: "{{ text_config.config }}"
+        dest: "{{ backup_directory }}/config.conf"
