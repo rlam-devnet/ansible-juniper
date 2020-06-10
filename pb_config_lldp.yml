@@ -1,0 +1,43 @@
+---
+- name: "### Configurar protocolo LLDP"
+  hosts: junos
+  connection: local
+  gather_facts: no
+  roles:
+    - juniper.junos
+  tasks:
+  ### -----------------------------------------------------
+  ### Configurar el protocolo LLDP en todas las interfaces
+  ### -----------------------------------------------------
+    - name: "Configurar LLDP"
+      juniper_junos_config:
+        user: "admin"
+        load: 'merge'
+        lines:
+          - 'set protocols lldp interface all'
+        format: 'set'
+      register: response
+
+  ### -----------------------------------------------------
+  ### imprimir la salida de la configuración
+  ### -----------------------------------------------------
+    - name: "Imprimir el resultado"
+      debug:
+       var: response
+
+  ### -----------------------------------------------------
+  ### visualizar los veciiones conectados
+  ### -----------------------------------------------------
+    - name: "visualizar los vecinos conectados con lldp"
+      juniper_junos_rpc:
+        user: "admin"
+        rpc: get-lldp-neighbors-information
+      register: lldp_vecinos
+
+  ### -----------------------------------------------------
+  ### visualizar los veciiones conectados
+  ### -----------------------------------------------------
+    - name: "imprimir la salida de los vecinos"
+      debug:
+        var: lldp_vecinos
+        
