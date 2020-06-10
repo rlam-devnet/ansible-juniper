@@ -1,0 +1,42 @@
+---
+- name: "### Realizar el backup de la configuración de los equipos de Red"
+  hosts: all
+  connection: local
+  gather_facts: no
+  roles:
+    - juniper.junos
+  tasks:
+    ### ------------------------------------------------------------------
+    ### Eliminamos directorio para el backup
+    ### ------------------------------------------------------------------
+    - name: "Eliminamos cualquier configuración antigua"
+      file:
+        path: "{{ backup_directory }}"
+        state: absent
+
+    ### ------------------------------------------------------------------
+    ### Creamos el directorio para el backup
+    ### ------------------------------------------------------------------
+
+    - name: "Creamos el directorio donde se almacenara el backup de la configuración"
+      file:
+        path: "{{ backup_directory }}"
+        state: directory
+
+    ### ------------------------------------------------------------------
+    ### Realizamos el backup de la configuración en los dispositivos de red
+    ### ------------------------------------------------------------------
+    - name: "Generamos el backup de la configuración"
+      juniper_junos_config:
+        user: "admin"
+        retrieve: committed
+        format: "xml"
+      register: xml_config
+
+    ### ------------------------------------------------------------------
+    ### Guardamos la configuración en el directorio
+    ### ------------------------------------------------------------------
+    - name: "creamos el archivo de configuración en el directorio de bakcup"
+      copy:
+        content: "{{ xml_config }}"
+        dest: "{{ backup_directory }}/config.xml"
