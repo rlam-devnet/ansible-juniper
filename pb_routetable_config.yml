@@ -1,0 +1,22 @@
+---
+- name: "### Recuperar la tabla de enrutamiento"
+  hosts: mxpe01
+  connection: local
+  gather_facts: no
+  roles:
+    - juniper.junos
+  tasks:
+    - name: "Obtener la tabla de enrutamiento"
+      juniper_junos_rpc:
+        user: "admin"
+        host: "{{ ansible_host }}"
+        rpc: get-route-information
+      register: route_table
+
+    - name: "Imprimir la tabla de enrutamiento"
+      debug:
+        var: route_table
+
+
+
+
