@@ -1,0 +1,31 @@
+configuration:
+  groups:
+    - name: GLOBAL_MTU_DEFAULTS
+      interfaces:
+        interface:
+          mtu: "9192"
+          name: <ae*>
+    - name: NETWORK_TRUNK_ALL
+      interfaces:
+        interface:
+          mtu: "9192"
+          name: <*>
+          unit:
+            family:
+              ethernet_switching:
+                interface_mode: trunk
+                vlans:  
+                  members: all
+            name: "0"
+    - name: NETWORK_ACCESS_MODE
+      inteerfaces:
+        interface:
+          mtu: "9192"
+          name: <*>
+          unit:
+            family:
+              ethernet_switching:
+                interface_mode: access
+                vlans:
+                  members: vlan_xxx
+            name: "0"

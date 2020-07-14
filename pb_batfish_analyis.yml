@@ -1,0 +1,63 @@
+---
+- name: "Extraemos el facts de los dispositivos de red usando batfish y ansible"
+  hosts: all
+  gather_facts: no
+  roles:
+    - { role: batfish.base }
+  vars:
+    ansible_connection: local
+    batfish_host: 172.17.0.2
+    config_dir: configs
+    batfish_network_folder: batfish_net_snapshot
+    batfish_analysis_folder: batfish_analysis_folder
+  tasks:
+    - name: "crear el directorio de configuracion para batfish"
+      file:
+        path: "{{ batfish_network_folder }}"
+        state: directory
+      run_once: yes
+
+    - name: "copiamos la configuracion de los dispositivos al directorio de batfish"
+      copy:
+        src: "{{ config_dir }}"
+        dest: "{{ batfish_network_folder }}"
+      run_once: yes
+
+    - name: "configuramos la conexion al servidor batfish"
+      bf_session:
+        host: "{{ batfish_host }}"
+        name: local_batfish
+      register: bf_session
+      run_once: yes
+
+    - name: "iniciamos el snapshot de la red"
+      bf_init_snapshot:
+        network: juniper_campus
+        snapshot: juniper_campus_config
+        snapshot_data: "{{ batfish_network_folder }}"
+        overwrite: true
+      run_once: yes
+      register: bf_snapshot
+
+    - name: "recuperamos los datos de batfish"
+      bf_extract_facts:
+        output_directory: "{{ batfish_analysis_folder }}/bf_facts"
+      run_once: true
+      register: bf_facts
+    ### -----------------------------------------------------------------
+    ### para visualizar la salida de la recuperacion de datos batfish
+    ### -----------------------------------------------------------------
+    #- name: "imprimimos el resultado para evaluación"
+    #  debug:
+    #    var: bf_facts
+
+    - name: "validamos todas las interfaces esten operativas y tengan las IP correctas"
+      assert:
+        that:
+          - bf_facts.result.nodes[inventory_hostname].Interfaces[item.name].Active == true 
+      loop: "{{ [inventory_hostname].configuration.interfaces.interface }}"
+        
+
+
+
+      

@@ -1,0 +1,68 @@
+---
+### -----------------------------------------------------------------------------------------
+### VALIDANDO QUE LA MAQUINA CONTROL DE ANSIBLE ESTE CORRIENDO UNA VERSION RECIENTE
+### -----------------------------------------------------------------------------------------
+- hosts: all
+  connection: local
+  gather_facts: false
+  become: false
+  tasks:
+    - name: "Revisando la version de Ansible >= 2.7.8"
+      assert:
+        msg: "Ansible deberia ser V2.7.8 o mayor"
+        that:
+          - ansible_version.string is version("2.7.8", ">")
+      tags:
+        - check
+  run_once: true
+
+### -----------------------------------------------------------------------------------------
+### REMOVIENDO Y RECREANDO DIRECTORIOS
+### -----------------------------------------------------------------------------------------
+- hosts: all
+  connection: local
+  gather_facts: false
+  vars_files:
+    - "compartir/variables.yml"
+  roles:
+    - { role: localhost_build_dirs }
+
+
+### -----------------------------------------------------------------------------------------
+### CONSTRUIR LAS PIEZAS DE CONFIGURACIÓN  Y ENSAMBLAR EN UN SOLO ARCHIVO 
+### -----------------------------------------------------------------------------------------
+- hosts: all
+  connection: local
+  gather_facts: false
+  vars_files:
+    - "compartir/variables.yml"
+  roles:
+    - { role: juniper_config_version,
+        tags: "switch",
+        when: "'swutch' in device.role", 
+      }
+    - { role: juniper_config_system }
+    - { role: juniper_config_interfaces,
+        tags: "switch",
+        when: "'switch' in device.role",
+      }
+    - { role: juniper_config_routing_options,
+        tags: "switch",
+        when: "'switch' in device.role", 
+      }
+    - { role: juniper_config_protocols }
+    - { role: juniper_config_bridge_domains }
+    - { role: juniper_assemble_config }
+
+### -----------------------------------------------------------------------------------------
+### VALIDAR, DIFERENCIAS Y APLICAR LA CONFIGUARCION
+### -----------------------------------------------------------------------------------------
+- hosts: all
+  connection: local
+  gather_facts: false
+  vars_files:
+    - "compartir/variables.yml"
+  roles:
+    - { role: juniper_config_diff }
+    - { role: juniper_config_check }
+    - { role: juniper_config_apply }

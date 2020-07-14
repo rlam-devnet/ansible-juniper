@@ -1,0 +1,17 @@
+{% if configuration.routing_options is defined %}
+routing-options {
+{% if configuration.routing_options.static is defined %}
+    static {
+{% if configuration.routing_options.static.route is defined %}
+{% for each in configuration.routing_options.static.route %}
+{% if each.next_hop is defined %}
+    {% for next in each.next_hop %}
+    route {{ each.name }} next-hop {{ next }};
+    {% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+}
+{% endif %}
+}
+{% endif %}

@@ -1,0 +1,20 @@
+---
+### ---------------------------------------------------------------
+### Revisamos la configuración sea segura y valida
+### ---------------------------------------------------------------
+- name: "validamos la configuración candidata en el dispositivo remoto"
+  juniper_junos_config:
+    load: override
+    user: admin
+    src: "{{ archivo_configuracion_completa }}"
+    timeout: 240
+    diff: false
+    check: true
+    commit: false
+  register: resultado
+  when: is_diff is defined
+
+- name: "imprimir el resultado por pantalla"
+  debug:
+    var: resultado
+  when: is_diff is defined

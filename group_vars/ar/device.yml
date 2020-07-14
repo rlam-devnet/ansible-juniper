@@ -1,0 +1,7 @@
+device:
+  role:
+    - switch
+  hardware:
+    family: "vmx"
+    virtual_chassis: null
+  software:

@@ -1,0 +1,41 @@
+{# ----------------------------------------------------------------------------#}
+{# Configuración de Interfaces #}
+{# ----------------------------------------------------------------------------#}
+{% if configuration.interfaces is defined %}
+interfaces {
+{% if configuration.interfaces.interface is defined %}
+{% for each in configuration.interfaces.interface %}
+    {{ each.name }} {
+{% if each.description is defined %}
+        description {{ each.description }};
+{% endif %}
+{% if each.unit is defined %}
+        unit {{ each.unit.name }} {
+{% endif %}
+{% if each.unit.family is defined %}
+{% if each.unit.family.bridge is defined %}
+            family bridge {
+{% if each.unit.family.bridge.interface_mode is defined %}
+                interface-mode {{ each.unit.family.bridge.interface_mode }};
+{% endif %}
+{% if each.unit.family.bridge.vlan_id_list is defined %}
+                vlan-id-list {{ each.unit.family.bridge.vlan_id_list }};
+{% endif %}
+{% if each.unit.family.bridge.vlan_id is defined %}
+                vlan-id {{ each.unit.family.bridge.vlan_id }};
+{% endif %}
+            }
+{% elif each.unit.family.inet is defined %}
+            family inet {
+{% if each.unit.family.inet.address is defined %}
+                address {{ each.unit.family.inet.address.name }};
+{% endif %}
+            }
+{% endif %}
+{% endif %}
+        }
+    }
+{% endfor %}
+{% endif %}
+}
+{% endif %}

@@ -1,0 +1,18 @@
+{# -------------------------------------------------------------------- #}
+{# configuracion de protocols                                           #} 
+{# -------------------------------------------------------------------- #}
+{% if configuration.protocols is defined %}
+{% if configuration.protocols.protocol is defined %}
+protocols {
+{% for each in configuration.protocols.protocol %}
+{% if each.name is defined %}
+    {{ each.name }} {
+{% if each.interface is defined %}
+        interface {{ each.interface }};
+{% endif %}
+    }
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endif %}
+}

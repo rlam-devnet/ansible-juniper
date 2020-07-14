@@ -1,0 +1,5 @@
+---
+- name: "Construyendo la configuración de version"
+  template:
+    src: "version.j2"
+    dest: "{{ build_directory }}/01_version.part"

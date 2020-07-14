@@ -1,0 +1,7 @@
+configuration:
+  protocols:
+    mstp:
+      interface:
+        - name: point-to-point
+         # name: xe-0/1/0
+    

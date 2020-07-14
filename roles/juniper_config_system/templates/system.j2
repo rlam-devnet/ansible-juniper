@@ -1,0 +1,114 @@
+{# ------------------------------------------------------------------#}
+{# hostname y domain-search                                          #}
+{# ------------------------------------------------------------------#}
+{% if configuration.system is defined %}
+system {
+{% if configuration.system.host_name is defined %}
+    host-name {{ configuration.system.host_name }}
+{% endif %}
+{% if configuration.system.domain_name is defined %}
+    domain-name {{ configuration.system.domain_name }};
+{% endif %}
+{% if configuration.system.domain_search is defined %}
+    domain-search {{ configuration.system.domain_search }};
+{% endif %}
+{# ------------------------------------------------------------------#}
+{# root password                                                     #}
+{# ------------------------------------------------------------------#}
+    {% if configuration.system.root_authentication is defined %}
+    root-authentication {
+        encrypted-password "{{ configuration.system.root_authentication.encrypted_password }}";
+    }
+    {% endif %}
+{# ------------------------------------------------------------------#}
+{# name server                                                       #}
+{# ------------------------------------------------------------------#}
+{% if configuration.system.name_server is defined %}
+name-server {
+{% for ns in configuration.system.name_server %}
+        {{  ns.name }};
+{% endfor %}
+    }
+{% endif %}
+{# ------------------------------------------------------------------#}
+{# system login                                                      #}
+{# ------------------------------------------------------------------#}
+{% if configuration.system.login is defined %}
+    login {
+    {% for dato in configuration.system.login.user %}
+    user {{ dato.name }} {
+    {% if dato.uid is defined %}
+        uid {{ dato.uid }};
+    {% endif %}
+    {% if dato.class is defined %}
+    class {{ dato.class }};
+    {% endif %}
+    {% if dato.authentication is defined %}
+    authentication {
+    {% if dato.authentication.ssh_rsa is defined %}
+            ssh-rsa "{{ dato.authentication.ssh_rsa.name }}";
+    {% endif %}
+        }
+    {% endif %}
+    }
+    {% endfor %}
+}
+{% endif %}
+{# ------------------------------------------------------------------#}
+{# services                                                          #}
+{# ------------------------------------------------------------------#}
+{% if configuration.system.services is defined %}
+    services {
+{% if configuration.system.services.ssh is defined %}
+        ssh;
+{% endif %}
+{% if configuration.system.services.netconf is defined %}
+        netconf {
+{% if configuration.system.services.netconf.ssh is defined %}
+            ssh {
+{% if configuration.system.services.netconf.ssh.port is defined %}
+                port {{ configuration.system.services.netconf.ssh.port }};
+{% endif %}
+{% endif %}
+            }
+{% endif %}
+        }
+    }
+{% endif %}
+{# ------------------------------------------------------------------#}
+{# syslog                                                            #}
+{# ------------------------------------------------------------------#}
+{% if configuration.system.syslog is defined %}
+    syslog {
+{% if configuration.system.syslog.user is defined %}
+        user {{ configuration.system.syslog.user.name }} {
+{% if configuration.system.syslog.user.contents is defined %}
+            {{ configuration.system.syslog.user.contents.name }} emergency;
+{% endif %}
+        }
+{% endif %}
+{% if configuration.system.syslog.files is defined %}
+{% for each in configuration.system.syslog.files %}
+        file {{ each.name }} {
+{% if each.contents is iterable and each.contents is not mapping %}
+{% for line in each.contents %}
+    {% if line.notice is defined %}
+        {{ line.name }} notice;
+    {% elif line.info is defined %}
+    {{ line.name }} info;
+{% endif %}
+{% endfor %}
+        }
+{% else %}
+    {% if each.contents.any is defined %}
+        {{ each.contents.name }} any;
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %} 
+        }
+{% endif %}
+    }
+
+} 
+{% endif %}

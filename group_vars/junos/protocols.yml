@@ -1,0 +1,8 @@
+configuration:
+  protocols:
+    protocol:
+      - name: lldp
+        interface: all
+      - name: lldp-med
+        interface: all
+        

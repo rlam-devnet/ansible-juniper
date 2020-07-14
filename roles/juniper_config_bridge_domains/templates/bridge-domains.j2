@@ -1,0 +1,16 @@
+{% if configuration.bridge_domains is defined %}
+bridge-domains {
+{% if configuration.bridge_domains.domain is defined %}
+{% for each in configuration.bridge_domains.domain %}
+    {{ each.name }} {
+{% if each.vlan_id is defined %}
+        vlan-id {{ each.vlan_id }};
+{% endif %}
+{% if each.routing_interface is defined %}
+        routing-interface {{ each.routing_interface }};
+{% endif %}
+    }
+{% endfor %}
+{% endif %}
+}
+{% endif %}

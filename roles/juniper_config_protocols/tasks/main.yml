@@ -1,0 +1,8 @@
+---
+### -------------------------------------------------------
+### configuracion de protocols
+### -------------------------------------------------------
+- name: "configuraciond de protocols"
+  template: 
+    src: "protocols.j2"
+    dest: "{{ build_directory }}/05_system_part"

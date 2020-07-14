@@ -1,0 +1,8 @@
+---
+# ---------------------------------------------------------
+# bridge-domains}
+# ---------------------------------------------------------
+- name: "configurar bridge-domains"
+  template:
+    src: "bridge-domains.j2"
+    dest: "{{ build_directory }}/06_system_part"

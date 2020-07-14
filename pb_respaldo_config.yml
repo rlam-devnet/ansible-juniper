@@ -1,6 +1,6 @@
 ---
 - name: "### Realizar el backup de la configuración de los equipos de Red"
-  hosts: all
+  hosts: mxp01
   connection: local
   gather_facts: no
   roles:
@@ -28,14 +28,16 @@
     ### ------------------------------------------------------------------
     - name: "Generamos el backup de la configuración"
       juniper_junos_config:
-        user: "admin"
+        provider:
+          user: "{{ username }}"
+          passwd: "{{ password }}"
         retrieve: committed
         format: "text"
       register: text_config
 
-    ### ------------------------------------------------------------------
-    ### Guardamos la configuración en el directorio
-    ### ------------------------------------------------------------------
+    ### -------------------------------------------------------------------------------------
+    ### Guardamos la configuración en el directorio backup_directory variable del grupo "all"
+    ### -------------------------------------------------------------------------------------
     - name: "creamos el archivo de configuración en el directorio de bakcup"
       copy:
         content: "{{ text_config.config }}"

@@ -1,0 +1,32 @@
+configuration:
+  interfaces:
+    interface:
+      - name: ge-0/0/1
+        description: "TRUNK-mxp02"
+        unit: 
+         name: "0"
+         family: 
+            bridge: 
+              interface_mode: "trunk"
+              vlan_id_list: "300-400"
+      - name: irb
+        unit:
+          name: "300"
+          family:
+            inet:
+              address:
+                name: "150.150.150.1/24"
+      - name: irb
+        unit:
+          name: "400"
+          family:
+            inet:
+              address:
+                name: "250.250.250.1/24"
+      - name: em0
+        unit:
+          name: "0"
+          family:
+            inet:
+              address: 
+                name: "172.20.1.201/24"

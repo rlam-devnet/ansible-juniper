@@ -1,0 +1,8 @@
+configuration:
+  bridge_domains:
+    domain:
+      - name: "VLAN_300"
+        vlan_id: "300"
+      - name: "VLAN_400"
+        vlan_id: "400"
+      

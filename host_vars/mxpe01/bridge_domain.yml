@@ -1,0 +1,10 @@
+configuration:
+  bridge_domains:
+    domain:
+      - name: "VLAN_100"
+        vlan_id: "100"
+        routing_interface: "irb.100"
+      - name: "VLAN_200"
+        vlan_id: "200"
+        routing_interface: "irb.200"
+      

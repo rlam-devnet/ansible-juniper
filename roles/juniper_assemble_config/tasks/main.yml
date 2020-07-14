@@ -1,0 +1,18 @@
+---
+### ------------------------------------------------------------
+### Esta tarea ensamblara toda la configuración Final
+### ------------------------------------------------------------
+- name: assemble configuración completa
+  assemble:
+    src: "{{ build_directory }}"
+    dest: "{{ archivo_configuracion_completa }}"
+
+
+### ------------------------------------------------------------
+### Esta tarea elimina los espacios
+### ------------------------------------------------------------
+- name: quita los espacios en las coincidencias
+  lineinfile:
+    path: "{{ archivo_configuracion_completa }}"
+    regexp: '(^\s*$)'
+    state: absent

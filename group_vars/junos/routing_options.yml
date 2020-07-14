@@ -1,0 +1,7 @@
+configuration:
+  routing_options:
+    static:
+      route:
+        - name: 0.0.0.0/0
+          next_hop: 
+            - 172.20.1.1

@@ -1,0 +1,60 @@
+---
+### ---------------------------------------------------------------------
+### IMPRIMIR MENSAJE EN CONSOLA DE LA RUTA DE ESTE ARCHIVO
+### ---------------------------------------------------------------------
+- name: "construir directorio local para retener los archivos de salida"
+  debug:
+    msg: "check roles/localhost_build_dirs/defaults/main.yml"
+  run_once: true
+
+### ---------------------------------------------------------------------
+### REMOVER Y RECREAR LA CONSTRUCIÓN DE LOS DIRECTORIOS
+### ---------------------------------------------------------------------
+- name: "remover directorios previos a la construción de directorios"
+  file:
+    path: "{{ build_directory }}"
+    state: absent
+
+- name: "creando nuevo directorio temporal"
+  file:
+    path: "{{ build_directory }}"
+    state: directory
+
+### ---------------------------------------------------------------------
+### REMOVER Y RECREAR DIRECTORIO FACTS
+### ---------------------------------------------------------------------
+- name: "remover directorios previos facts"
+  file:
+    path: "{{ directorio_facts }}"
+    state: absent
+
+- name: "creando nuevo directorio facts"
+  file:
+    path: "{{ directorio_facts }}"
+    state: directory
+
+### ---------------------------------------------------------------------
+### REMOVER Y RECREAR DIRECTORIO DE CONFIGURACIÓN
+### ---------------------------------------------------------------------
+- name: "remover directorios previos de configuración"
+  file:
+    path: "{{ directorio_configuracion }}"
+    state: absent
+
+- name: "creando directorio nuevo para configuración"
+  file:
+    path: "{{ directorio_configuracion }}"
+    state: directory
+
+### ---------------------------------------------------------------------
+### REMOVER Y RECREAR DIRECTORIO DE RESPALDO
+### ---------------------------------------------------------------------
+- name: "remover directorios previos de respaldo"
+  file:
+    path: "{{ directorio_respaldo }}"
+    state: absent
+
+- name: "creando directorio nuevo para respaldo"
+  file:
+    path: "{{ directorio_respaldo }}"
+    state: directory

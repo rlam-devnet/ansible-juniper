@@ -1,0 +1,23 @@
+#configuration:
+ # interfaces:
+  #  interface:
+      # -----------------------------------------------
+      # Interfaces
+      # -----------------------------------------------
+   #     - name: ge-0/0/0
+    #      unit:
+     #       family:
+               
+
+
+
+    #interfaces {
+    #ge-0/0/0 {
+    #    description "peer:mxpe01 remote_port:ge-0/0/0";
+     #   mtu 1500;
+      #  unit 0 {
+       #     family inet {
+        #        address 10.1.1.2/31;
+         #   }
+       # }
+   # }
