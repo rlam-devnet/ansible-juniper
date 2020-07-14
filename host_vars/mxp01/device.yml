@@ -1,0 +1,14 @@
+device:
+  role:
+    - switch
+# esta parte de la estructura de configuración ya esta en el group_vars
+#  role:
+#    - switch
+#    - virtual_chassis
+#  hardware:
+#    family: "ex"
+#    chassis: "Virtual Chassis"
+#  software:
+#    os_image: "14.1R1.10"
+#  lo0:
+#    ipv4: x.x.x.x

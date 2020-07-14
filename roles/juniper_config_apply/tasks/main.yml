@@ -1,0 +1,16 @@
+---
+### -----------------------------------------------------------------
+### aplicamos la configuración
+### -----------------------------------------------------------------
+- name: "aplicamos al configuración candidata en el dispositivo remoto"
+  juniper_junos_config:
+    load: override
+    user: admin
+    src: "{{ archivo_configuracion_completa }}"
+    timeout: 240
+  register: resultado
+
+- name: "imprimir el resultado de la consola"
+  debug:
+    var: resultado
+  when: resultado.diff_lines is defined

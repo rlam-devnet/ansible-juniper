@@ -33,9 +33,9 @@
         format: "text"
       register: text_config
 
-    ### ------------------------------------------------------------------
-    ### Guardamos la configuración en el directorio
-    ### ------------------------------------------------------------------
+    ### -------------------------------------------------------------------------------------
+    ### Guardamos la configuración en el directorio backup_directory variable del grupo "all"
+    ### -------------------------------------------------------------------------------------
     - name: "creamos el archivo de configuración en el directorio de bakcup"
       copy:
         content: "{{ text_config.config }}"

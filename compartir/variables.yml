@@ -1,0 +1,31 @@
+---
+### --------------------------------------------------------------
+### Directorios que se utilizaran para los roles
+### --------------------------------------------------------------
+
+# la raiz de todas las configuraciones construidas durante el correr de los playbook
+directorio_temporal: "/tmp/ansible/"
+
+# elementos de configuración de cada hosts por dispositivo
+build_directory: "{{ directorio_temporal }}/{{ inventory_hostname }}/tmp"
+
+# directorio final para guardar la configuración final  del producto
+directorio_configuracion: "config"
+
+# nombre del actual archivo de configuración que se empujara a los dispositivos remotos
+archivo_configuracion: "{{ inventory_hostname }}.conf"
+
+# ruta completa para el archivo de configuración completa
+archivo_configuracion_completa: "{{ directorio_configuracion }}/{{ archivo_configuracion }}"
+
+# configuración de almacenamiento de datos que seran rescatados  desde los dispositivos
+directorio_respaldo: "./respaldo/{{ inventory_hostname }}"
+
+# respaldo del archivo de configuración que sera rescatado desde los dispositivos
+archivo_respaldo: "{{ directorio_respaldo }}/{{ inventory_hostname }}.conf"
+
+# declaramos cuando se quiera transferir para sobreescribir los archivos yaml locales
+directorio_vars_host: "./host_vars/{{ inventory_hostname }}"
+
+# rescate de configuración facts desde los dispositivos guardados fuera de linea
+directorio_facts: "{{ directorio_respaldo }}/facts"

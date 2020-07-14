@@ -1,0 +1,5 @@
+---
+- name: "tarea para crear configuración de system"
+  template:
+    src: "system.j2"
+    dest: "{{ build_directory }}/02_system.part"

@@ -1,0 +1,5 @@
+device:
+  hardware:
+    chassis: ""
+  software:
+    os_image: "14.1R1.10"

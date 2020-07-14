@@ -1,0 +1,96 @@
+configuration:
+  system:
+    #arp:
+     # aging_timer: "5"
+      #gratuitous_arp_on_ifup: null
+      #purging: null
+    #auto_snapshot: null
+    #commit:
+    #  synchronize: null
+    domain_name: ula.ve
+    domain_search: ula.ve
+    host_name: "{{ inventory_hostname }}"
+    login:
+      #class:
+       # - idle_timeout: "10"
+        #  name: MAINTENANCE-ID
+        #  permissions: 
+        #- idle_timeout: "10"
+        #  name: SUPERUSER-ID
+        #  permissions: all
+        #- idle_timeout: "10"
+        #  name: VIEW-ID
+        #  permissions: view
+      # message: "*************************************** WARNING *************************************************\n*"
+      #retry_options:
+      #  backoff_factor: "10"
+      #  backoff_threshold: "3"
+      #  tries_before_disconnect: "3"
+      user:
+        - name: admin
+          authentication:
+            ssh_rsa:
+              name: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCjvd8VKeQ9t8VnARwYcMm/UlKuftc6Qn7iv35fZ6tWAmqCFpq2Gv/rNmO+jJ+FdVlnVwxwhLE0iIXFI9baHv0LqUhfVc5Qjr5sNWxpc8voo2QmI+Idt7jOxBHi4tkVatBF95VSuWc4mhIbjkfELvhb8RJjf6w7fPK+4l0h3zYoBouZr3jpc5u8LfD03H02TqRuqjtSf5XcN+DKuCsSy2QAfv0mQlOXY9aMEY5icQgpwqTcNHt/gTRZ2+cUwhbrY6BOuxxLIenBiOHxMnj22R/uZ+23lnP+SCbNXBPpbKGwZgRV0tGpN8G1Zvb9yJwA3sQwAlgRjzNcaJxM5jZyUEu0BsYqdkB6kG5fq9t/ZlyaqhMwiB231J+LXszWyaM3tLc0paUE99qQaNB+e2uaWjXza8ov9+VQ7ZwVRJJ1q0hHJwtKemUvdDazdzIFNMGO5s8T3XoNFeJMw/TOkPnq6vnOsIz6oVJ6EeHF3uGVk2nvlfmfIxvEnR8n2XpFNLvwhBhP0Kc37K2UpxcEs2poNQU8Aft1IfrX8cHRE/wePw1Z9UkwwLu6AfI+JVXMc6GC29cTzgUf5M4dqVP7+Bs5onHJw2HOAv8UqbROtiAncr1HQjdHmTHREwChAZIVnGS8y74NN/BXo8D0DK08i/M3aYldApgTGjZHf0c2vNhf5ejS5Q== richard.albornoz@uc.cl
+          class: super-user
+          uid: "3000"
+    name_server:
+      - name: 10.255.127.251
+      - name: 10.225.127.252
+    root_authentication:
+      encrypted_password: $1$X77YXcyb$WPbjQMPX4Rilvb8/5bI/.0
+    services:
+      ftp: null
+      netconf:
+        ssh: 
+          port: "830"
+      rest:
+        enable_explorer: null
+        http:
+          port: "8080"
+      ssh:
+        connection_limit: "10"
+        max_sessions_per_connection: "32"
+        protocol_version: v2
+        rate_limit: "10"
+        root_login: allow
+    syslog:
+      files:
+        - name: messages
+          contents:
+            - name: any
+              notice: null
+
+            - name: authorization
+              info: null
+
+        - name: interactive-commands
+          contents:
+            any: null
+            name: interactive-commands
+
+      #  - name: default-log-messages
+      #    match: "(requested 'commit' operation)|(requested 'commit' )"
+      #    contents:
+      #      info: null
+      #      name: any
+      #    structured_data: null
+      host:
+        - name: logcollector
+          match: "!RT_FLOW_SESSION"
+          contents:
+            any: null
+            name: any
+          source_address: "{{ inventory_hostname }}"
+
+        - name: 10.255.127.15
+          contents:
+            any: null
+            name: any
+          source_address: "{{ inventory_hostname }}"
+      user:
+        contents:
+          emergency: null
+          name: any
+        name: "*"
+    time_zone: America/Santiago
+    

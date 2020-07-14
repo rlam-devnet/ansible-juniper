@@ -1,0 +1,59 @@
+---
+### --------------------------------------------------------------------
+### Diferencia en al configuración para saber qeu cambios son necesarios
+### --------------------------------------------------------------------
+- name: "recuperando la configuración en modo texto"
+  juniper_junos_config:
+    user: admin
+    retrieve: "committed"
+    format: text
+    diff: false
+    check: false
+    commit: false
+  register: committed
+
+### --------------------------------------------------------------------
+### guardamos la configuracion en una variable para posterior uso
+### --------------------------------------------------------------------
+- name: "guardando la configuracion en una variable"
+  set_fact:
+    committed_config: "{{ committed.config }}"
+
+### --------------------------------------------------------------------
+### copiamos la configuracion en el directorio de backup
+### --------------------------------------------------------------------
+- name: "copiamos la configuracion en el directorio backup"
+  local_action:
+    module: copy
+    content: "{{ committed_config }}"
+    dest: "{{ backup_directory }}/{{ inventory_hostname }}.conf"
+
+
+### --------------------------------------------------------------------
+### sacamos la diferencia entre las configuraciones
+### --------------------------------------------------------------------
+- name: "removemos las lineas en blanco entre las coincidencias"
+  lineinfile:
+    path: "{{ backup_directory }}/{{ inventory_hostname }}.conf"
+    regexp: '(^\s*$)'
+    state: absent
+
+- name: "removemos la linea del commit"
+  lineinfile:
+    path: "{{ backup_directory }}/{{ inventory_hostname }}.conf"
+    regexp: '(^##.*)'
+    state: absent
+
+-  name: "diferencia del committed en la configuracion candidata local"
+   command: "diff {{ backup_directory }} {{ archivo_configuracion_completa }}"
+   failed_when: "diff.rc > 1"
+   register: diff
+
+- name: "imprimir la diferencia en pantalla"
+  debug: msg="{{ diff.stdout }}"
+  when: "diff.stdout | length > 0"
+
+- name: "seteamos la variable diff si hay una diferencia en la caja"
+  set_fact:
+    is_diff: True
+  when: "diff.stdout | length > 0"

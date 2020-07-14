@@ -1,0 +1,73 @@
+configuration:
+  interfaces:
+    interface:
+      - name: ge-0/0/0
+        description: "TRUNK-mxpe01"
+        unit: 
+         name: "0"
+         family: 
+            bridge:
+              interface_mode: "trunk"
+              vlan_id_list: "100-200"
+      - name: ge-0/0/1
+        unit:
+          name: "0"
+          family:
+            bridge:
+              interface_mode: "access"
+              vlan_id: "100"
+      - name: ge-0/0/2
+        unit:
+          name: "0"
+          family:
+            bridge:
+              interface_mode: "access"
+              vlan_id: "200"
+      - name: em0
+        description: "NET-OOB"
+        unit:
+          name: "0"
+          family:
+            inet:
+              address: 
+                name: "172.20.1.202/24"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#configuration:
+ # interfaces:
+  #  interface:
+   #   - name: ge-0/0/0
+    #    mtu: "9192"
+     #   unit:
+      #    name: "0"
+       #   family: 
+        #    ethernet_switching:
+         #     interface_mode: access
+          #    vlan:
+           #     members: vlan_xxx
+                

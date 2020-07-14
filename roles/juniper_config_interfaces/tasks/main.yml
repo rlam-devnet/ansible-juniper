@@ -1,0 +1,8 @@
+---
+### ---------------------------------------------------------------
+### Interfaces 
+### ---------------------------------------------------------------
+- name: configurando interfaces
+  template:
+    src: "interfaces.j2"
+    dest: "{{ build_directory }}/03_system_part"
